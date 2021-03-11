@@ -1,0 +1,64 @@
+1. npm init(press enter ... then type yes)
+2. create src folder and then inside it 
+3. Install express (npm i express)
+4. configure express in index.js
+------------------------------------------------------------
+    const express = require('express')
+const path = require('path')
+
+const app = express()
+const port = process.env.PORT ||3000
+
+const publicDirectoryPath = path.join(__dirname,'../public')
+
+app.use(express.static(publicDirectoryPath))
+
+app.listen(port,() =>{
+    console.log(`Server is up on port ${port}`);
+})
+----------------------------------------------------------
+this will server the content of public publicDirectoryPath
+
+----------------------------------------------------
+Our node js configuration can handle both http and websocket request 
+but the only thing is we need to configure express in a slightly different way.
+    const express = require('express')
+    const http = require('http')
+    const path = require('path')
+
+    const app = express()
+    const server = http.createServer(app)
+
+    const port = process.env.PORT ||3000
+
+    const publicDirectoryPath = path.join(__dirname,'../public')
+
+    app.use(express.static(publicDirectoryPath))
+
+    server.listen(port,() =>{
+        console.log(`Server is up on port ${port}`);
+    })
+-----------------------------------------------
+Now we can setup socket.io
+    const express = require('express')
+    const http = require('http')
+    const path = require('path')
+    const socketio = require('socket.io')
+
+    const app = express()
+    const server = http.createServer(app)
+    const io = socketio(server)
+
+    const port = process.env.PORT ||3000
+
+    const publicDirectoryPath = path.join(__dirname,'../public')
+
+    app.use(express.static(publicDirectoryPath))
+
+    server.listen(port,() =>{
+        console.log(`Server is up on port ${port}`);
+    })
+
+--> Socket io expect to paas a raw http server , so when express creates that behind the scren we dont have access to it so we had created our own http server
+--> now our server support web socket  
+--------------------------
